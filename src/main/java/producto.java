@@ -7,32 +7,71 @@ import java.sql.ResultSetMetaData;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 /**
  *
  * @author Hiram Molina
  */
-public class producto extends javax.swing.JFrame {
+   public class producto extends javax.swing.JFrame {
 
-        public static final String url = "jdbc:mysql://localhost:3306/puntodeventa";
-        public static final String user = "root";
-        public static final String pass = "admin";
-    
-        PreparedStatement ps;
-        ResultSet rs;
-        
-            public static Connection getConnection(){
-            Connection con = null;
+    public static final String url = "jdbc:mysql://localhost:3306/puntodeventa";
+    public static final String user = "root";
+    public static final String pass = "admin";
 
-            
-                try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    con = DriverManager.getConnection(url,user,pass);
-//                    JOptionPane.showMessageDialog(null, "Conexion exitosa");
-                } catch (Exception e) {
-                    System.out.println("e");
-                }
-                return con;
-            }
+    PreparedStatement ps;
+    ResultSet rs;
+
+    public static Connection getConnection() {
+        Connection con = null;
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(url, user, pass);
+
+            // Lógica para escribir en un archivo
+            escribirInformacionConexion();
+
+            // JOptionPane.showMessageDialog(null, "Conexion exitosa");
+        } catch (Exception e) {
+            System.out.println("Error en la conexión: " + e.getMessage());
+        }
+        return con;
+    }
+
+                    public static void escribirInformacionConexion() {
+                        try {
+                            File archivo = new File("informacion_conexion.txt");
+                            archivo.createNewFile();
+
+                            BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+                            writer.write("**********************************************\n");
+                            writer.write("Conexión exitosa a la base de datos el dia:\n");
+                            writer.write("Dia, fecha y hora: " + ObtenerFecha() + "\n");
+                            writer.write("URL: " + url + "\n");
+                            writer.write("Usuario: " + user + "\n");
+                            writer.write("Contraseña: " + pass + "\n");
+                            writer.write("**********************************************\n");
+                            writer.close();
+                        } catch (IOException e) {
+                            System.out.println("Error al escribir en el archivo: " + e.getMessage());
+                        }
+                    }
+         
+                    public static String ObtenerFecha(){
+                        LocalDateTime ahora = LocalDateTime.now();
+                        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                        return ahora.format(formato);
+                    }
+   
     
         private void limpiarCajas(){ //LIMPIA TODAS LAS CAJAS
             
@@ -42,7 +81,23 @@ public class producto extends javax.swing.JFrame {
             txtProveedor.setText(null);
             txtExistencia.setText(null);
             cbxCategoria.setSelectedIndex(0);
-            
+            escribirFechaHoraLimpieza();
+        }
+        
+            public void escribirFechaHoraLimpieza() {
+            try {
+                File archivo = new File("informacion_conexion.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                String fechaHoraLimpieza = ahora.format(formatter);
+
+                writer.write(fechaHoraLimpieza + " Boton Cajas limpiadas\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error al escribir en el archivo: " + e.getMessage());
+            }
         }
             
     public producto() {
@@ -187,7 +242,7 @@ public class producto extends javax.swing.JFrame {
         jtProductos.setRowHeight(30);
         jScrollPane2.setViewportView(jtProductos);
 
-        btnCargar.setText("Cargar Datos");
+        btnCargar.setText("Actualizar tabla");
         btnCargar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCargarActionPerformed(evt);
@@ -354,7 +409,7 @@ public class producto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 //BOTON GUARDAR ------------------------------------------------------------}}}
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        
+
         Connection con = getConnection();
         
         try {
@@ -365,15 +420,16 @@ public class producto extends javax.swing.JFrame {
             ps.setString(5, txtProveedor.getText());
             ps.setString(6, txtExistencia.getText());
             ps.setString(4, cbxCategoria.getSelectedItem().toString());
-
+            
             //Ejecutar consulta
             //Igualamos a Int si se ejecutó o no correctamente
             int res = ps.executeUpdate();
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "Producto guardado");
                 limpiarCajas();
+                escribirGuardarProducto();
             }else{
-                JOptionPane.showMessageDialog(null, "Mi loco, dele pa psicología");
+                JOptionPane.showMessageDialog(null, "Error al guardar");
                 limpiarCajas();
             }
             con.close();
@@ -383,6 +439,23 @@ public class producto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void escribirGuardarProducto(){
+               try {File archivo = new File("informacion_conexion.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                String fechaHoraGuardarProd = ahora.format(formatter);
+
+                writer.write(fechaHoraGuardarProd + " Boton Guardar productos\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error al escribir en el archivo: " + e.getMessage());
+            }
+        }
+    
+    
+    
     private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdActionPerformed
@@ -403,6 +476,7 @@ public class producto extends javax.swing.JFrame {
                 cbxCategoria.setSelectedItem(rs.getString("categoriaProducto"));
                 txtProveedor.setText(rs.getString("IdProveedor"));
                 txtExistencia.setText(rs.getString("existencia"));
+                escribirBuscar();
             }
             else{
                 JOptionPane.showMessageDialog(null, "No existe producto con esa clave");
@@ -410,9 +484,23 @@ public class producto extends javax.swing.JFrame {
         } catch (Exception e) {
             System.err.println(e);
         }
-
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void escribirBuscar(){
+               try {File archivo = new File("informacion_conexion.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                String fechaHoraBuscarProd = ahora.format(formatter);
+
+                writer.write(fechaHoraBuscarProd + " Boton Buscar por ID\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error al escribir en el archivo: " + e.getMessage());
+            }
+        }
+    
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         //Boton Modificar
         
@@ -434,8 +522,9 @@ public class producto extends javax.swing.JFrame {
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "Producto modificado");
                 limpiarCajas();
+                escribirModificarProd();
             }else{
-                JOptionPane.showMessageDialog(null, "Mi loco, dele pa psicología");
+                JOptionPane.showMessageDialog(null, "Error al modificar");
                 limpiarCajas();
             }
             con.close();
@@ -446,11 +535,42 @@ public class producto extends javax.swing.JFrame {
                                               
 
     }//GEN-LAST:event_btnModificarActionPerformed
+    
+    private void escribirModificarProd(){
+                   try {File archivo = new File("informacion_conexion.txt");
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
 
+                    LocalDateTime ahora = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                    String fechaHoraModificarProd = ahora.format(formatter);
+
+                    writer.write(fechaHoraModificarProd + " Boton modificar producto\n");
+                    writer.close();
+                } catch (IOException e) {
+                    System.out.println("Error al escribir en el archivo: " + e.getMessage());
+                }
+            }
+    
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         limpiarCajas();
+        escribirBotonLimpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void escribirBotonLimpiar(){
+                   try {File archivo = new File("informacion_conexion.txt");
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                    LocalDateTime ahora = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                    String fechaHoraBotonLimpiar = ahora.format(formatter);
+
+                    writer.write(fechaHoraBotonLimpiar + " Boton limpiar cajas\n");
+                    writer.close();
+                } catch (IOException e) {
+                    System.out.println("Error al escribir en el archivo: " + e.getMessage());
+                }
+            }
+    
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
         Connection con = getConnection();
@@ -471,8 +591,9 @@ public class producto extends javax.swing.JFrame {
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "Producto eliminado");
                 limpiarCajas();
+                escribitbtnEliminar();
             }else{
-                JOptionPane.showMessageDialog(null, "Mi loco, dele pa psicología");
+                JOptionPane.showMessageDialog(null, "Error al eliminar");
                 limpiarCajas();
             }
             con.close();
@@ -485,7 +606,21 @@ public class producto extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarActionPerformed
+    private void escribitbtnEliminar(){
+                       try {File archivo = new File("informacion_conexion.txt");
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
 
+                        LocalDateTime ahora = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                        String fechaHoraBotonEliminar = ahora.format(formatter);
+
+                        writer.write(fechaHoraBotonEliminar + " Boton eliminar producto\n");
+                        writer.close();
+                    } catch (IOException e) {
+                        System.out.println("Error al escribir en el archivo: " + e.getMessage());
+                    }
+                }
+    
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
 
 try {
@@ -507,6 +642,7 @@ try {
             modelo.addColumn("Nombre");
             modelo.addColumn("Precio");
             modelo.addColumn("Existencia");
+            escribirBtnActualizarTabla();
             
             while (rs.next()) { //PARA PROPORCIONAR LOS DATOS DE CADA FILA CADA CICLO
                 Object[] filas = new Object[cantidadColumnas]; //IMPORTANTE DECLARAR EL TAMAÑO DE LOS ARREGLOS 
@@ -515,6 +651,7 @@ try {
                 {
                     //Igualar los elementos de la variable filas
                     filas[i] = rs.getObject(i+1);
+                    
                 }
                 modelo.addRow(filas);
             }
@@ -522,10 +659,23 @@ try {
         } catch (Exception e) {
             System.err.println(e.toString());
         }
-
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnCargarActionPerformed
 
+    private void escribirBtnActualizarTabla(){
+                       try {File archivo = new File("informacion_conexion.txt");
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                        LocalDateTime ahora = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                        String fechaHoraBotonActualizarTabla = ahora.format(formatter);
+
+                        writer.write(fechaHoraBotonActualizarTabla + " Boton actualizar tabla\n");
+                        writer.close();
+                    } catch (IOException e) {
+                        System.out.println("Error al escribir en el archivo: " + e.getMessage());
+                    }
+                }
+    
     private void btnAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendaActionPerformed
             
     }//GEN-LAST:event_btnAgendaActionPerformed
