@@ -53,13 +53,13 @@ import java.time.format.DateTimeFormatter;
                             archivo.createNewFile();
 
                             BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
-                            writer.write("**********************************************\n");
-                            writer.write("Conexión exitosa a la base de datos el dia:\n");
-                            writer.write("Dia, fecha y hora: " + ObtenerFecha() + "\n");
-                            writer.write("URL: " + url + "\n");
-                            writer.write("Usuario: " + user + "\n");
-                            writer.write("Contraseña: " + pass + "\n");
-                            writer.write("**********************************************\n");
+//                            writer.write("**********************************************\n");
+                            writer.write(ObtenerFecha() + "Conexión exitosa a la base de datos\n");
+//                            writer.write("Dia, fecha y hora: "  "\n");
+                            writer.write("  URL: " + url + "\n");
+                            writer.write("  Usuario: " + user + "\n");
+                            writer.write("  Contraseña: " + pass + "\n");
+//                            writer.write("**********************************************\n");
                             writer.close();
                         } catch (IOException e) {
                             System.out.println("Error al escribir en el archivo: " + e.getMessage());
@@ -683,14 +683,45 @@ try {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
          AgendaProveedores agendaProveedores = new AgendaProveedores();
                 agendaProveedores.setVisible(true);
-                
+                escribirbtnAbrirVentanaProv();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void escribirbtnAbrirVentanaProv(){
+                       try {File archivo = new File("informacion_conexion.txt");
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                        LocalDateTime ahora = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                        String fechaHoraBotoAgenda = ahora.format(formatter);
+
+                        writer.write(fechaHoraBotoAgenda + " Boton abrir agenda\n");
+                        writer.close();
+                    } catch (IOException e) {
+                        System.out.println("Error al escribir en el archivo: " + e.getMessage());
+                    }
+                }
+    
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         PantallaVenta pantallaVenta = new PantallaVenta();
                 pantallaVenta.setVisible(true);
+                escribirbtnAbrirVentanaProv();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    
+                    private void btnAbrirVentanaVenta(){
+                       try {File archivo = new File("informacion_conexion.txt");
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                        LocalDateTime ahora = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                        String fechaHoraBotonVenta = ahora.format(formatter);
+
+                        writer.write(fechaHoraBotonVenta + " Boton abrir pantalla venta\n");
+                        writer.close();
+                    } catch (IOException e) {
+                        System.out.println("Error al escribir en el archivo: " + e.getMessage());
+                    }
+                }
     /**
      * @param args the command line arguments
      */

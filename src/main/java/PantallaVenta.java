@@ -1,8 +1,14 @@
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -35,11 +41,39 @@ public class PantallaVenta extends javax.swing.JFrame {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     con = DriverManager.getConnection(url,user,pass);
 //                    JOptionPane.showMessageDialog(null, "Conexion exitosa");
+                    escribirConectar();
                 } catch (Exception e) {
                     System.out.println("e");
                 }
                 return con;
-            }
+                    }
+            
+            public static void escribirConectar() {
+                        try {
+                            File archivo = new File("informacion_conexion.txt");
+                            archivo.createNewFile();
+
+                            BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+//                            writer.write("**********************************************\n");
+                            writer.write(ObtenerFecha() + " Conexión exitosa a la base de datos\n");
+//                            writer.write("Dia, fecha y hora: "  "\n");
+//                            writer.write("  URL: " + url + "\n");
+//                            writer.write("  Usuario: " + user + "\n");
+//                            writer.write("  Contraseña: " + pass + "\n");
+//                            writer.write("**********************************************\n");
+                            writer.close();
+                        } catch (IOException e) {
+                            System.out.println("Error al escribir en el archivo: " + e.getMessage());
+                        }
+                    }
+            
+            public static String ObtenerFecha(){
+                        LocalDateTime ahora = LocalDateTime.now();
+                        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                        return ahora.format(formato);
+                    }
+            
+            
             private void limpiarCajas(){ //LIMPIA TODAS LAS CAJAS
             
             txtId.setText(null);
@@ -48,8 +82,27 @@ public class PantallaVenta extends javax.swing.JFrame {
 //            txtProveedor.setText(null);
             txtExistencia.setText(null);
             jCantidad.setValue(0);
-            
+            escribirLimpiarCajas();
         }
+            private void escribirLimpiarCajas(){
+               try {File archivo = new File("informacion_conexion.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                String fechaHoraLimpiarCajas = ahora.format(formatter);
+
+                writer.write(fechaHoraLimpiarCajas + " Boton limpiar cajas\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error al escribir en el archivo: " + e.getMessage());
+            }
+        }
+            
+            
+            
+            
+            
             public PantallaVenta() {
         initComponents();
         setDefaultCloseOperation(PantallaVenta.DISPOSE_ON_CLOSE);
@@ -58,7 +111,7 @@ public class PantallaVenta extends javax.swing.JFrame {
         txtFecha.setText(""+calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH));
         String formateoFecha = String.format("%d-%02d-%d", calendar.get(Calendar.YEAR), month, calendar.get(Calendar.DAY_OF_MONTH));
             txtFecha.setText(formateoFecha);
-
+            
 
 
 // Formatear la fecha en un String con el mes correcto
@@ -345,6 +398,7 @@ public class PantallaVenta extends javax.swing.JFrame {
 //                cbxCategoria.setSelectedItem(rs.getString("categoriaProducto"));
 //                txtProveedor.setText(rs.getString("IdProveedor"));
                 txtExistencia.setText(rs.getString("existencia"));
+                escribirbtnBuscarID();
             }
             else{
                 JOptionPane.showMessageDialog(null, "No existe producto con esa clave");
@@ -353,6 +407,22 @@ public class PantallaVenta extends javax.swing.JFrame {
             System.err.println(e);
         }
     }//GEN-LAST:event_btnBuscarCodActionPerformed
+private void escribirbtnBuscarID(){
+               try {File archivo = new File("informacion_conexion.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                String fechaHoraBuscarID = ahora.format(formatter);
+
+                writer.write(fechaHoraBuscarID + " Boton buscar por ID\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error al escribir en el archivo: " + e.getMessage());
+            }
+        }
+
+
 //BOTON BUSCAR _________________________________________________________________________BOTON BUSCAR___________________________________________
     private void btnBuscarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProdActionPerformed
 //BOTON BUSCAR _________________________________________________________________________BOTON BUSCAR___________________________________________
@@ -370,6 +440,7 @@ public class PantallaVenta extends javax.swing.JFrame {
 //                cbxCategoria.setSelectedItem(rs.getString("categoriaProducto"));
 //                txtProveedor.setText(rs.getString("IdProveedor"));
                 txtExistencia.setText(rs.getString("existencia"));
+                escribirbtnBuscarNombre();
             }
             else{
                 JOptionPane.showMessageDialog(null, "No existe producto con ese nombre");
@@ -379,6 +450,22 @@ public class PantallaVenta extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarProdActionPerformed
 
+    private void escribirbtnBuscarNombre(){
+               try {File archivo = new File("informacion_conexion.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                String fechaHoraBuscarNombre = ahora.format(formatter);
+
+                writer.write(fechaHoraBuscarNombre + " Boton buscar por ID\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error al escribir en el archivo: " + e.getMessage());
+            }
+        }
+    
+    
     private void btnAggVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAggVentaActionPerformed
        
         Connection con = getConnection();
@@ -411,6 +498,7 @@ public class PantallaVenta extends javax.swing.JFrame {
             if (resultadoUpdate > 0) {
                 JOptionPane.showMessageDialog(null, "Producto a venta. Existencias actualizadas.");
                 limpiarCajas();
+                escribirbtnAggVenta();
             } else {
                 JOptionPane.showMessageDialog(null, "Venta exitosa pero no se pudo actualizar la existencia.");
                 limpiarCajas();
@@ -427,10 +515,45 @@ public class PantallaVenta extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnAggVentaActionPerformed
 
+    private void escribirbtnAggVenta(){
+               try {File archivo = new File("informacion_conexion.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                String fechaHoraAggVenta = ahora.format(formatter);
+
+                writer.write(fechaHoraAggVenta + " Boton agregar venta\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error al escribir en el archivo: " + e.getMessage());
+            }
+        }
+    
+    
+    
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         limpiarCajas();
+        escribirBtnCancelar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void escribirBtnCancelar(){
+               try {File archivo = new File("informacion_conexion.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true));
+
+                LocalDateTime ahora = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY HH:mm:ss");
+                String fechaHoraCancelar = ahora.format(formatter);
+
+                writer.write(fechaHoraCancelar + " Boton Cancelar\n");
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error al escribir en el archivo: " + e.getMessage());
+            }
+        }
+    
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
