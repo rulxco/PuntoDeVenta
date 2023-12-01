@@ -88,3 +88,36 @@ Contraseña: admin
   Usuario: root
   Contraseña: admin
 30-11-2023 22:42:07 Boton actualizar tabla
+01-12-2023 08:39:11 Boton abrir agenda
+01-12-2023 09:10:36 Boton abrir agenda
+01-12-2023 09:10:39 Boton abrir agenda
+01-12-2023 09:20:50 Boton abrir agenda
+01-12-2023 10:51:33 Boton abrir agenda
+01-12-2023 11:38:05 Boton abrir agenda
+01-12-2023 11:38:39 Boton abrir agenda
+01-12-2023 11:39:19 Boton abrir agenda
+01-12-2023 11:39:22 Boton abrir agenda
+01-12-2023 11:41:57 Boton abrir agenda
+01-12-2023 11:44:49 Boton abrir agenda
+01-12-2023 11:44:52 Boton abrir agenda
+01-12-2023 11:44:55 Boton abrir agenda
+01-12-2023 11:48:21 Boton abrir agenda
+01-12-2023 11:48:24 Boton abrir agenda
+01-12-2023 11:53:09 Boton abrir agenda
+01-12-2023 11:53:14 Boton abrir agenda
+01-12-2023 11:53:18 Boton abrir agenda
+01-12-2023 11:57:32 Boton Cajas limpiadas
+01-12-2023 11:57:32 Boton limpiar cajas
+01-12-2023 11:57:35 Boton Cajas limpiadas
+01-12-2023 11:57:35 Boton limpiar cajas
+01-12-2023 11:59:19 Boton abrir agenda
+01-12-2023 12:05:36 Boton abrir agenda
+01-12-2023 12:05:44 Boton abrir agenda
+01-12-2023 12:14:32 Boton abrir agenda
+01-12-2023 12:14:35 Boton abrir agenda
+01-12-2023 12:40:07 Boton abrir agenda
+01-12-2023 13:08:59 Boton abrir agenda
+01-12-2023 13:13:50 Boton abrir agenda
+01-12-2023 13:13:53 Boton abrir agenda
+01-12-2023 15:33:57 Boton abrir agenda
+01-12-2023 15:44:08 Boton abrir agenda
