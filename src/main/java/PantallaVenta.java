@@ -54,8 +54,16 @@ public class PantallaVenta extends javax.swing.JFrame {
         initComponents();
         setDefaultCloseOperation(PantallaVenta.DISPOSE_ON_CLOSE);
         Calendar calendar = new GregorianCalendar();
+        int month = calendar.get(Calendar.MONTH) + 1; // Agregar 1 para obtener el mes correcto
         txtFecha.setText(""+calendar.get(Calendar.YEAR)+"-"+calendar.get(Calendar.MONTH)+"-"+calendar.get(Calendar.DAY_OF_MONTH));
+        String formateoFecha = String.format("%d-%02d-%d", calendar.get(Calendar.YEAR), month, calendar.get(Calendar.DAY_OF_MONTH));
+            txtFecha.setText(formateoFecha);
 
+
+
+// Formatear la fecha en un String con el mes correcto
+//String formattedDate = String.format("%d-%02d-%d", calendar.get(Calendar.YEAR), month, calendar.get(Calendar.DAY_OF_MONTH));
+//txtFecha.setText(formattedDate);
         
     }
         
@@ -252,14 +260,15 @@ public class PantallaVenta extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel7)
                         .addComponent(txtExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel9)))
+                        .addComponent(jLabel9))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
